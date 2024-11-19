@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 const intitialTasks = [
@@ -15,6 +15,32 @@ function App() {
 
   const [tasks, setTasks] = useState(intitialTasks)
   const [newTask, setNewTask] = useState('')
+  const [searchText, setSearchText] = useState('')
+  const [filteredTasks, setFilteredTasks] = useState([])
+  useEffect(() => {
+
+    // searchText = Rest
+    // filteredTask = ['Rest']
+    // tasks = filterdTasks
+    // tasks = ['Rest']
+
+    // Digito 
+    // searhText = Laravel
+    // 
+
+
+    const filteredTasks = tasks.filter((task) => task.includes(searchText))
+    console.log(filteredTasks);
+
+    // Error
+    //setTasks(filteredTasks)
+
+    setFilteredTasks(filteredTasks)
+
+
+
+  }, [tasks, searchText])
+
 
 
   function addTask(e) {
@@ -51,12 +77,40 @@ function App() {
 
   }
 
+  function handleSearchForm(e) {
+    e.preventDefault()
+    //alert('Form sent')
+  }
+
+
 
 
   return (
     <>
       <div className="container">
-        <h1>Todolist</h1>
+        <div className="d-flex align-items-center justify-content-between">
+          <h1>Todolist</h1>
+
+          <form onSubmit={handleSearchForm}>
+            <div className="mb-3">
+
+              <input
+                type="search"
+                className="form-control"
+                name="searchText"
+                id="searchText"
+                aria-describedby="searchHelper"
+                placeholder=" 🔍 Search ..."
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+              />
+
+            </div>
+
+          </form>
+
+        </div>
+
 
         {/* New Task form */}
 
@@ -84,7 +138,7 @@ function App() {
         {/* List */}
         <ul className="list-group">
 
-          {tasks.map((task, index) =>
+          {filteredTasks.map((task, index) =>
             <li key={index} className="list-group-item d-flex justify-content-between">
               {task}
 
